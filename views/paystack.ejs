@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Paystack Payment</title>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+  <button onclick="payWithPaystack()">Pay Now</button>
+
+  <script>
+      
+    function payWithPaystack() {
+        var email = '<%= email %>'
+        var price = '<%= price %>'
+       
+      var handler = PaystackPop.setup({
+        key: 'pk_test_d9b526ade8115aa1e2650dd054f892d713070d9d',
+        email:email,
+        amount: price, // Amount in kobo (1000 Naira)
+        currency: 'NGN',
+        callback: function(response) {
+          // Handle the response from Paystack callback
+          if (response.status === 'success') {
+            // Payment successful, send the response to your server for verification
+            console.log(response);
+
+
+        const dataToSend = {
+          email: email,
+          price:price,
+     
+          paymentResponse: response
+        }
+            // Send the payment details to your /charge API endpoint
+            fetch('/charge', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(dataToSend)
+            })
+            .then(response => response.json())
+            .then(data => {
+              // Handle the response from your /charge API endpoint
+              console.log(data);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+          } else {
+            // Payment failed or was cancelled
+            console.log(response);
+          }
+        },
+        onClose: function() {
+          // Handle the case when the payment form is closed without completing the payment
+          console.log('Payment window closed');
+        }
+      });
+      handler.openIframe();
+    }
+  </script>
+</body>
+</html>
+

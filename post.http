@@ -1,0 +1,32 @@
+POST http://localhost:3000/dept
+Content-Type: application/json
+
+{
+  "name": "Economics",
+  "departmentId":201323,
+  "price":1250000,
+  "departmentType":"B.Sc"
+ 
+}
+
+###
+
+GET http://localhost:3000/getdept
+
+###
+
+POST http://localhost:3000/postcourse
+Content-Type: application/json
+
+{
+  "courseName": "Game Programming",
+  "majorType":"B.Sc",
+  "level":300,
+  "departmentName":"Computer Science",
+  "courseCode":"CSC 301"
+ 
+}
+
+###
+
+POST http://localhost:3000/100lcourse/100
